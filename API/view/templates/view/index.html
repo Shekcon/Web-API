@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block context %}
+<div class="container">
+    {% if not result_videos %}
+      <h2 class="my-7">No video avaiable match your searching
+      </h2>
+    
+    {% else %}
+      {% for video in result_videos %}
+        <div class="row">
+          <div class="col-md-4">
+            <a href="{% url 'view:watch' video.video_id %}">
+              <img class="img-fluid rounded" src="{{ video.thumbnail }}" alt="">
+            </a>
+          </div>
+          <div class="col-md-7">
+            <h4>{{ video.title }}</h4>
+            <p> Description of videos</p>
+          </div>
+        </div>
+        <hr>
+        
+      {% endfor %}
+    
+    {% endif %}
+</div>
+{% endblock %}
