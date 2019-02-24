@@ -1,19 +1,12 @@
-from django.shortcuts import render, reverse, HttpResponse
+from django.shortcuts import render, reverse, HttpResponseRedirect
 from apiclient.discovery import build
-from apiclient.errors import HttpError
 
 
 def result(request, *args, **kargs):
     if request.method == "POST":
-        options = {
-            "key": request.POST['key'],
-            "max_results": 25
-        }
-        contents = {
-            "result_videos": search_videos(options)
-        }
+        contents = get_result(key=request.POST['key'])
         return render(request, 'view/result.html', contents)
-    return render(request, 'view/result.html', {})
+    return HttpResponseRedirect(reverse('view:home'))
 
 
 def search_videos(options):
@@ -46,8 +39,6 @@ def search_videos(options):
                 'thumbnail': search_result["snippet"]["thumbnails"]["high"]["url"],
                 'description': search_result['snippet']['description']
             })
-            print(search_result)
-    # print(contexts)
     return contexts
 
 
@@ -57,8 +48,16 @@ def watching(request, video_id):
     })
 
 
-def index(request, *args, **kargs):
-    contents = {
+def get_result(key=None, max_results=25):
+    options = {
+        "key": key,
+        "max_results": max_results
+    }
+    return {
         "result_videos": search_videos(options)
     }
-    return render(request, 'view/index.html', contents)
+
+
+def index(request, *args, **kargs):
+    contents = get_result()
+    return render(request, 'view/result.html', contents)

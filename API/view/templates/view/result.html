@@ -15,7 +15,8 @@
             </a>
           </div>
           <div class="col-md-7">
-            <h4>{{ video.title }}</h4>
+            <a class="btn btn-default" href="{% url 'view:watch' video.video_id %}" 
+            style="font-size: 25px; padding: 0; text-align: left">{{ video.title }}</a>
             <p> {{ video.description }}</p>
           </div>
         </div>
