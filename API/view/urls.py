@@ -4,5 +4,5 @@ from .views import result, watching, index
 urlpatterns = [
     path('', index, name='results'),
     path('results/', result, name='results'),
-    path('watch/<slug:id>', watching, name='watch')
+    path('watch/<slug:video_id>', watching, name='watch')
 ]

@@ -9,6 +9,9 @@ def result(request, *args, **kargs):
             "key": request.POST['key'],
             "max_results": 25
         }
+        contents = {
+            "result_videos": search_videos(options)
+        }
         return render(request, 'view/result.html', contents)
     return render(request, 'view/result.html', {})
 
@@ -40,17 +43,22 @@ def search_videos(options):
             contexts.append({
                 'title': search_result["snippet"]["title"],
                 'video_id': search_result["id"]["videoId"],
-                'thumbnail': search_result["snippet"]["thumbnails"]["high"]["url"]
+                'thumbnail': search_result["snippet"]["thumbnails"]["high"]["url"],
+                'description': search_result['snippet']['description']
             })
-    print(contexts)
+            print(search_result)
+    # print(contexts)
     return contexts
 
-def watching(request, id):
-    return HttpResponse("Greeting Shekcon %s" % (id))
+
+def watching(request, video_id):
+    return render(request, "view/watch.html", {
+        "video_id": video_id
+    })
 
 
 def index(request, *args, **kargs):
     contents = {
-            "result_videos": search_videos(options)
+        "result_videos": search_videos(options)
     }
-    return render(request, 'view/result.html', contents)
+    return render(request, 'view/index.html', contents)
